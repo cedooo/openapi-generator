@@ -29,7 +29,7 @@ public enum GeneratorLanguage {
     ERLANG("Erlang"), F_SHARP("F#"), GO("Go"),
     JAVASCRIPT("Javascript"), GRAPH_QL("GraphQL"), GROOVY("Groovy"),
     HASKELL("Haskell"), HTTP("Jetbrains HTTP Client (HTTP/REST)"), TYPESCRIPT("Typescript"), K_SIX("k6"), KOTLIN("Kotlin"),
-    KTORM("Ktorm"), LUA("Lua"), MYSQL("Mysql"), NIM("Nim"),
+    KTORM("Ktorm"), LUA("Lua"), MYSQL("Mysql"), POSTGRESQL("PostgreSQL"), NIM("Nim"),
     OBJECTIVE_C("Objective-C"), OCAML("OCaml"), PERL("Perl"), PHP("PHP"),
     POWERSHELL("PowerShell"), PROTOBUF("Protocol Buffers (Protobuf)"), PYTHON("Python"),
     R("R"), RUBY("Ruby"), RUST("Rust"), SCALA("Scala"), SWIFT("Swift"),

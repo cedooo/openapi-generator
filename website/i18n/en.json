@@ -331,6 +331,10 @@
         "title": "Config Options for mysql-schema",
         "sidebar_label": "mysql-schema"
       },
+      "generators/postgresql-schema": {
+        "title": "Config Options for postgresql-schema",
+        "sidebar_label": "postgresql-schema"
+      },
       "generators/nim": {
         "title": "Config Options for nim",
         "sidebar_label": "nim"

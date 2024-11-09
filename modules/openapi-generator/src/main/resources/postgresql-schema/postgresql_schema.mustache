@@ -1,0 +1,49 @@
+{{#defaultDatabaseName}}
+-- Database: `{{{defaultDatabaseName}}}`
+CREATE DATABASE `{{{defaultDatabaseName}}}`;
+{{/defaultDatabaseName}}
+-- --------------------------------------------------------
+{{#models}}{{#model}}{{#hasVars}}{{^isArray}}--
+-- Table structure{{#vendorExtensions}}{{#x-postgresql-schema}}{{#tableDefinition}} for table `{{tblName}}`{{/tableDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}} generated from model '{{classVarName}}'
+{{#description}}
+-- {{.}}
+{{/description}}
+--
+{{#vendorExtensions}}
+{{#x-postgresql-schema}}
+{{#tableDefinition}}
+{{#vars}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#columnDefinition}}{{#isEnum}}CREATE TYPE {{tblName}}_{{colName}}_enums AS ENUM {{#colDataTypeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}}){{/-last}}{{/colDataTypeArguments}}; {{/isEnum}}{{/columnDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/vars}}
+CREATE TABLE IF NOT EXISTS {{#defaultDatabaseName}}"{{{.}}}".{{/defaultDatabaseName}}"{{tblName}}" (
+{{/tableDefinition}}
+{{/x-postgresql-schema}}
+{{/vendorExtensions}}
+  {{#vars}}
+  {{#vendorExtensions}}
+  {{#x-postgresql-schema}}
+  {{#columnDefinition}}
+    {{^isEnum}}"{{colName}}" {{colDataType}}{{#colDataTypeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}}){{/-last}}{{/colDataTypeArguments}}{{#colUnsigned}} UNSIGNED{{/colUnsigned}}{{#colNotNull}} NOT NULL{{/colNotNull}}{{#colDefault}} DEFAULT {{#isString}}'{{defaultValue}}'{{/isString}}{{^isString}}{{defaultValue}}{{/isString}}{{/colDefault}}{{^-last}},{{/-last}}{{/isEnum}}{{#isEnum}}"{{colName}}" {{tblName}}_{{colName}}_enums  {{#colNotNull}} NOT NULL{{/colNotNull}}{{#colDefault}} DEFAULT {{#isString}}'{{defaultValue}}'{{/isString}}{{^isString}}{{defaultValue}}{{/isString}}{{/colDefault}}{{^-last}},{{/-last}}{{/isEnum}}
+  {{/columnDefinition}}
+  {{/x-postgresql-schema}}
+  {{/vendorExtensions}}
+  {{/vars}}
+{{#vendorExtensions}}
+{{#x-postgresql-schema}}
+) ;
+{{#tableDefinition}}
+-- 添加表注释
+COMMENT ON TABLE {{tblName}} IS '{{description}}';
+{{#vendorExtensions}}
+{{#vars}}
+{{#vendorExtensions}}
+{{#x-postgresql-schema}}
+{{#columnDefinition}}
+COMMENT ON COLUMN {{tblName}}.{{colName}} IS '{{description}}';
+{{/columnDefinition}}
+{{/x-postgresql-schema}}
+{{/vendorExtensions}}
+{{/vars}}
+{{/vendorExtensions}}
+{{/tableDefinition}}
+{{/x-postgresql-schema}}
+{{/vendorExtensions}}
+{{/isArray}}{{/hasVars}}{{/model}}{{/models}}
