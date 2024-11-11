@@ -232,6 +232,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         // make model src path available in mustache template
         additionalProperties.put("modelSrcPath", "./" + toSrcPath(modelPackage));
         supportingFiles.add(new SupportingFile("postgresql_schema.mustache", "", "postgresql_schema.sql"));
+        supportingFiles.add(new SupportingFile("postgresql_schema_common_column.mustache", "", "postgresql_schema_common_column.sql"));
     }
 
     @Override

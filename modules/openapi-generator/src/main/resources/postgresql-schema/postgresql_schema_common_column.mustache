@@ -1,0 +1,19 @@
+-- --------------------------------------------------------
+{{#models}}{{#model}}{{#hasVars}}{{^isArray}}
+{{#vendorExtensions}}
+{{#x-postgresql-schema}}
+{{#tableDefinition}}
+ALTER TABLE {{tblName}} ADD create_time timestamp NULL;
+COMMENT ON COLUMN {{tblName}}.create_time IS '创建时间';
+ALTER TABLE {{tblName}} ADD update_time timestamp NULL;
+COMMENT ON COLUMN {{tblName}}.update_time IS '修改时间';
+ALTER TABLE {{tblName}} ADD create_by varchar(64) NULL;
+COMMENT ON COLUMN {{tblName}}.create_by IS '创建人';
+ALTER TABLE {{tblName}} ADD update_by varchar(64) NULL;
+COMMENT ON COLUMN {{tblName}}.update_by IS '更新人';
+ALTER TABLE {{tblName}} ADD is_deleted int2 DEFAULT 0 NULL;
+COMMENT ON COLUMN {{tblName}}.is_deleted IS '是否删除 0未删除  1已删除';
+{{/tableDefinition}}
+{{/x-postgresql-schema}}
+{{/vendorExtensions}}
+{{/isArray}}{{/hasVars}}{{/model}}{{/models}}
