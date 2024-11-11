@@ -38,6 +38,7 @@ COMMENT ON TABLE {{tblName}} IS '{{description}}';
 {{#x-postgresql-schema}}
 {{#columnDefinition}}
 COMMENT ON COLUMN {{tblName}}.{{colName}} IS '{{description}}';
+{{#colPrimaryKey}}ALTER TABLE {{tblName}} ADD CONSTRAINT {{tblName}}_pk PRIMARY KEY ({{colName}});{{/colPrimaryKey}}
 {{/columnDefinition}}
 {{/x-postgresql-schema}}
 {{/vendorExtensions}}

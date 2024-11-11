@@ -392,6 +392,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -485,6 +486,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -542,6 +544,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -628,6 +631,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -684,6 +688,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -743,6 +748,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -799,6 +805,7 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
         if (description != null) {
             columnDefinition.put("colComment", description);
         }
+        setPrimaryKeyConvention(columnDefinition);
     }
 
     /**
@@ -1189,4 +1196,23 @@ public class PostgresqlSchemaCodegen extends DefaultCodegen implements CodegenCo
 
     @Override
     public GeneratorLanguage generatorLanguage() { return GeneratorLanguage.POSTGRESQL; }
+
+    @Getter @Setter
+    protected String primaryKeyConvention = "id";
+
+    /**
+     * Checks if the model type should be a relationship instead.
+     *
+     * @param columnDefinition resulting column definition dictionary
+     * @return is a relation
+     */
+    private boolean isPrimaryKey(Map<String, Object> columnDefinition) {
+        String colName = (String) columnDefinition.get("colName");
+        return colName.equals(primaryKeyConvention);
+    }
+
+    private void setPrimaryKeyConvention(Map<String, Object> columnDefinition) {
+        columnDefinition.put("colPrimaryKey", isPrimaryKey(columnDefinition));
+    }
+
 }
