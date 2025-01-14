@@ -22,6 +22,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.annotations.Webhook;
+import io.swagger.v3.oas.annotations.Webhooks;
 import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.callbacks.Callback;
@@ -35,6 +37,7 @@ import org.openapitools.codegen.utils.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.*;
 
 public class InlineModelResolver {
@@ -106,8 +109,20 @@ public class InlineModelResolver {
         }
 
         flattenPaths();
+        flattenWebhooks();
         flattenComponents();
         flattenComponentResponses();
+    }
+
+    /**
+     * Flatten inline models in Webhooks
+     */
+    private void flattenWebhooks() {
+        Map<String, PathItem> webhooks  = openAPI.getWebhooks();
+        if (webhooks == null) {
+            return;
+        }
+        flattenPathItems(webhooks);
     }
 
     /**
@@ -118,8 +133,16 @@ public class InlineModelResolver {
         if (paths == null) {
             return;
         }
+        flattenPathItems(paths);
+    }
 
-        for (Map.Entry<String, PathItem> pathsEntry : paths.entrySet()) {
+    /**
+     * Flatten inline models in path items
+     *
+     * @param pathItemMap Map of path items
+     */
+    private void flattenPathItems(Map<String, PathItem> pathItemMap) {
+        for (Map.Entry<String, PathItem> pathsEntry : pathItemMap.entrySet()) {
             PathItem path = pathsEntry.getValue();
             List<Map.Entry<HttpMethod, Operation>> toFlatten = new ArrayList<>(path.readOperationsMap().entrySet());
 
@@ -184,7 +207,7 @@ public class InlineModelResolver {
 
     /**
      * Return false if model can be represented by primitives e.g. string, object
-     * without properties, array or map of other model (model contanier), etc.
+     * without properties, array or map of other model (model container), etc.
      * <p>
      * Return true if a model should be generated e.g. object with properties,
      * enum, oneOf, allOf, anyOf, etc.
@@ -197,7 +220,7 @@ public class InlineModelResolver {
 
     /**
      * Return false if model can be represented by primitives e.g. string, object
-     * without properties, array or map of other model (model contanier), etc.
+     * without properties, array or map of other model (model container), etc.
      * <p>
      * Return true if a model should be generated e.g. object with properties,
      * enum, oneOf, allOf, anyOf, etc.
@@ -606,7 +629,7 @@ public class InlineModelResolver {
      *     breed:
      *       type: string
      *
-     * @param key      a unique name ofr the composed schema.
+     * @param key      a unique name for the composed schema.
      * @param children the list of nested schemas within a composed schema (allOf, anyOf, oneOf).
      * @param skipAllOfInlineSchemas true if allOf inline schemas need to be skipped.
      */
@@ -1020,7 +1043,7 @@ public class InlineModelResolver {
      * Add the schemas to the components
      *
      * @param name   name of the inline schema
-     * @param schema inilne schema
+     * @param schema inline schema
      * @return the actual model name (based on inlineSchemaNameMapping if provided)
      */
     private String addSchemas(String name, Schema schema) {

@@ -1,10 +1,36 @@
-{{#defaultDatabaseName}}
--- Database: `{{{defaultDatabaseName}}}`
-CREATE DATABASE `{{{defaultDatabaseName}}}`;
-{{/defaultDatabaseName}}
--- --------------------------------------------------------
+--
+-- Schema objects for PostgreSQL
+-- "{{appName}}"
+-- Created using 'openapi-generator' ('postgresql-schema' generator)
+-- (https://openapi-generator.tech/docs/generators/postgresql-schema)
+--
+
+--
+-- DROP OBJECTS
+-- (remove comment prefix to start using DROP commands)
+--
+-- TABLES
+--
+{{#models}}{{#model}}{{#hasVars}}{{^isArray}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#tableDefinition}}-- DROP TABLE IF EXISTS {{#defaultDatabaseName}}{{{.}}}.{{/defaultDatabaseName}}{{#tblNameQuoted}}"{{/tblNameQuoted}}{{tblName}}{{#tblNameQuoted}}"{{/tblNameQuoted}};
+{{/tableDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/isArray}}{{/hasVars}}{{/model}}{{/models}}
+--
+-- TYPES
+--
+{{#models}}{{#model}}{{#hasVars}}{{^isArray}}{{#vars}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#typeDefinition}}-- DROP TYPE IF EXISTS {{typeName}};
+{{/typeDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/vars}}{{/isArray}}{{/hasVars}}{{/model}}{{/models}}
+
+--
+-- CREATE OBJECTS
+--
+-- TYPES
+--
+{{#models}}{{#model}}{{#hasVars}}{{^isArray}}{{#vars}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#typeDefinition}}CREATE TYPE {{typeName}} AS ENUM{{#typeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}});
+{{/-last}}{{/typeArguments}}{{/typeDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/vars}}{{/isArray}}{{/hasVars}}{{/model}}{{/models}}
+--
+-- TABLES
+--
 {{#models}}{{#model}}{{#hasVars}}{{^isArray}}--
--- Table structure{{#vendorExtensions}}{{#x-postgresql-schema}}{{#tableDefinition}} for table `{{tblName}}`{{/tableDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}} generated from model '{{classVarName}}'
+-- Table {{#vendorExtensions}}{{#x-postgresql-schema}}{{#tableDefinition}}'{{tblName}}'{{/tableDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}} generated from model '{{classVarName}}'
 {{#description}}
 -- {{.}}
 {{/description}}
@@ -12,39 +38,29 @@ CREATE DATABASE `{{{defaultDatabaseName}}}`;
 {{#vendorExtensions}}
 {{#x-postgresql-schema}}
 {{#tableDefinition}}
-{{#vars}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#columnDefinition}}{{#isEnum}}CREATE TYPE {{tblName}}_{{colName}}_enums AS ENUM {{#colDataTypeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}}){{/-last}}{{/colDataTypeArguments}}; {{/isEnum}}{{/columnDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/vars}}
-CREATE TABLE IF NOT EXISTS {{#defaultDatabaseName}}"{{{.}}}".{{/defaultDatabaseName}}"{{tblName}}" (
+CREATE TABLE IF NOT EXISTS {{#defaultDatabaseName}}{{{.}}}.{{/defaultDatabaseName}}{{#tblNameQuoted}}"{{/tblNameQuoted}}{{tblName}}{{#tblNameQuoted}}"{{/tblNameQuoted}} (
 {{/tableDefinition}}
 {{/x-postgresql-schema}}
 {{/vendorExtensions}}
-  {{#vars}}
-  {{#vendorExtensions}}
-  {{#x-postgresql-schema}}
-  {{#columnDefinition}}
-    {{^isEnum}}"{{colName}}" {{colDataType}}{{#colDataTypeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}}){{/-last}}{{/colDataTypeArguments}}{{#colUnsigned}} UNSIGNED{{/colUnsigned}}{{#colNotNull}} NOT NULL{{/colNotNull}}{{#colDefault}} DEFAULT {{#isString}}'{{defaultValue}}'{{/isString}}{{^isString}}{{defaultValue}}{{/isString}}{{/colDefault}}{{^-last}},{{/-last}}{{/isEnum}}{{#isEnum}}"{{colName}}" {{tblName}}_{{colName}}_enums  {{#colNotNull}} NOT NULL{{/colNotNull}}{{#colDefault}} DEFAULT {{#isString}}'{{defaultValue}}'{{/isString}}{{^isString}}{{defaultValue}}{{/isString}}{{/colDefault}}{{^-last}},{{/-last}}{{/isEnum}}
-  {{/columnDefinition}}
-  {{/x-postgresql-schema}}
-  {{/vendorExtensions}}
-  {{/vars}}
+    {{#vars}}
+    {{#vendorExtensions}}
+    {{#x-postgresql-schema}}
+    {{#columnDefinition}}
+    {{#colNameQuoted}}"{{/colNameQuoted}}{{colName}}{{#colNameQuoted}}"{{/colNameQuoted}} {{colDataType}}{{#colDataTypeArguments}}{{#-first}}({{/-first}}{{#isString}}'{{/isString}}{{argumentValue}}{{#isString}}'{{/isString}}{{^-last}}, {{/-last}}{{#-last}}){{/-last}}{{/colDataTypeArguments}}{{#colNotNull}} NOT NULL{{/colNotNull}}{{#colDefault}} DEFAULT {{#isString}}'{{defaultValue}}'{{/isString}}{{^isString}}{{defaultValue}}{{/isString}}{{/colDefault}}{{^-last}},{{/-last}}
+    {{/columnDefinition}}
+    {{/x-postgresql-schema}}
+    {{/vendorExtensions}}
+    {{/vars}}
 {{#vendorExtensions}}
 {{#x-postgresql-schema}}
-) ;
 {{#tableDefinition}}
--- 添加表注释
-COMMENT ON TABLE {{tblName}} IS '{{description}}';
-{{#vendorExtensions}}
-{{#vars}}
-{{#vendorExtensions}}
-{{#x-postgresql-schema}}
-{{#columnDefinition}}
-COMMENT ON COLUMN {{tblName}}.{{colName}} IS '{{description}}';
-{{#colPrimaryKey}}ALTER TABLE {{tblName}} ADD CONSTRAINT {{tblName}}_pk PRIMARY KEY ({{colName}});{{/colPrimaryKey}}
-{{/columnDefinition}}
-{{/x-postgresql-schema}}
-{{/vendorExtensions}}
-{{/vars}}
-{{/vendorExtensions}}
+);
 {{/tableDefinition}}
 {{/x-postgresql-schema}}
+{{/vendorExtensions}}
+{{#vendorExtensions}}
+{{#x-postgresql-schema}}{{#tableDefinition}}{{#tblComment}}COMMENT ON TABLE {{#tblNameQuoted}}"{{/tblNameQuoted}}{{tblName}}{{#tblNameQuoted}}"{{/tblNameQuoted}} IS '{{.}}'{{/tblComment}};
+{{/tableDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{#vars}}{{#vendorExtensions}}{{#x-postgresql-schema}}{{#columnDefinition}}{{#colComment}}COMMENT ON COLUMN {{#tblNameQuoted}}"{{/tblNameQuoted}}{{tblName}}{{#tblNameQuoted}}"{{/tblNameQuoted}}.{{#colNameQuoted}}"{{/colNameQuoted}}{{colName}}{{#colNameQuoted}}"{{/colNameQuoted}} IS '{{.}}';
+{{/colComment}}{{/columnDefinition}}{{/x-postgresql-schema}}{{/vendorExtensions}}{{/vars}}{{#vendorExtensions}}
 {{/vendorExtensions}}
 {{/isArray}}{{/hasVars}}{{/model}}{{/models}}
